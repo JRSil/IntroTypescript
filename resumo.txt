@@ -1,0 +1,191 @@
+Typescript é uma extensão do javascript
+
+tipos estáticos, organiza código em classes e módulos
+
+let spaceships = 10
+spaceships = "10"
+console.log(spaceships+1)
+> "101"
+
+ships.ts -> transpile -> ships.js <- import
+
+let name: string
+name = "han solo"
+
+let name = "han solo"
+
+suporta: number, string e boolean.
+
+tb é usado o any, pra uma implementação gradativa.
+
+let isShieldsUp: any
+isShieldsUp = false
+isShieldsUp = "false"
+
+/************ ARRAYS **************/
+
+let players: number[] = [1, 2, 3]
+let players: Array<number> = [1, 2, 3]
+let players: [1, 2, 3] //inferência de tipo
+
+
+/*********** CONFIGURANDO **********/
+
+npm install typescript -g
+
+tsc -w : funciona como um ng serve, acompanhando a atualização dos arquivos em tempo real
+
+criar um tsconfig.json com as configurações para compilar.
+
+/********** FUNÇÕES ***********/
+
+aceita parâmetros e retornos, usando arrow functions
+
+function useTheForce(name: string): void{
+    console.log('Use the force, ' + name)
+}
+
+let tieFighters = ships.filter(function(ship){
+    return ship.type === 'TieFighter'
+})
+
+let ties = ships.filter(ship => ship.type === 'TieFighter') //encurtando a função acima
+
+let call: (name: string) => void //estou avisando que esta variável será uma função, mesmo ainda não a declarando
+call = name => console.log("Do you copy, " + name + "?")
+call("R2")
+>Do you copy, R2?
+
+function inc(speed: number, inc: number): number{
+    return speed + inc
+}
+//na chamada, obrigatório a passagem dos 2 parâmetros
+inc(5, 1)
+>6
+
+//caso queira tornar algum parâmetro em opcional, necessário o uso de "?" após o nome da variável
+function inc(speed: number, inc?: number): number{
+    let i = inc || 1
+    return speed + inc
+}
+
+inc(5, 1) /* e */ inc(5) 
+//vão resultar
+>6
+
+//ou então, dá pra dar um valor padrão para o parâmetro na chamada da função
+function inc(speed: number, inc: number = 1): number{
+    return speed + inc
+}
+
+/*****************  CLASSES **************************/
+
+Classe é uma definição de objeto, define atributos e comportamento. Um objeto é a instância da classe.
+
+class Spacecraft{
+    propulsor: string
+
+    constructor(propulsor: string){
+        this.propulsor = propulsor
+    }
+
+    jumpIntoHyperspace(){
+        console.log("Entering hyperspace with " + this.propulsor)
+    }
+}
+
+COMO CRIAR UMA NOVA CLASSE?
+
+let falcon = new Spacecraft("hyperdrive")
+
+falcon.jumpIntoHyperspace()
+> Entering hyperspace with hyperdrive
+
+FORMA RESUMIDA DO TSC
+class Spacecraft{
+    constructor(public propulsor: string){}
+}
+
+USANDO HERANÇA
+class MilleniumFalcon extends Spacecraft{
+    constructor(){
+        super("hyperdrive)
+    }
+
+    jumpIntoHyperspace(){
+        if(Math.random() >= 0.5){
+            super.jumpIntoHyperspace()
+        }else{
+            console.log("Failed")
+        }
+    }
+}
+
+INTERFACES DEFINEM UM CONTRATO PARA FUNCIONAR
+
+interface Containership{
+    cargoContainers: number
+}
+
+//PARA QUE LEIA A INTERFACE, NECESSÁRIO O IMPLEMENTS E DENTRO DA CLASSE, COLOCAR A MESMA INFORMAÇÃO.
+class MilleniumFalcon extends Spacecraft implements Containership{
+    cargoContainers: number
+    
+    constructor(){
+        super("hyperdrive)
+        this.cargoContainers = 4
+    }
+
+    jumpIntoHyperspace(){
+        if(Math.random() >= 0.5){
+            super.jumpIntoHyperspace()
+        }else{
+            console.log("Failed")
+        }
+    }
+}
+
+function goodForTheJob(ship: Containership): boolean{
+    return ship.cargoContainers > 2
+}
+
+let falcon = new MilleniumFalcon()
+console.log(goodForTheJob(falcon))
+> true
+
+//UMA INTERFACE PODE EXTENDER OUTRA INTERFACE
+interface Smugglership extends Containership{
+    hiddenContainers: number
+}
+
+Módulo é uma unidade que contém classes, interfaces, funções e variáveis. Organizando o conteúdo.
+
+//------------dentro de um arquivo: base-ships.ts
+
+interface Containership{
+    cargoContainers: number
+}
+
+export { Containership as CShip }
+
+//-----------dentro de uma arquivo: starfighters.ts
+
+import {Spacecraft} from "./base-ships"
+
+class MilleniumFalcon extends Spacecraft{
+    //...
+}
+
+NAMESPACE EVITA COLISÃO DE NOMES, ANTIGOS MÓDULOS INTERNOS.
+
+Definição de tipo: pode trazer uma biblioteca qualquer para ser transformada pro javascript (*.d.ts)
+
+Para obter definições de tipo, é possível usar o NPM Registry, pelo git tem o Definitely Typed
+
+> npm init 
+  name: (typescript)
+  version: (1.0.0)
+
+> npm install --save lodash@4.14
+
+> npm install --save-dev @types/lodash@4.14
