@@ -33,9 +33,13 @@ let players: [1, 2, 3] //inferência de tipo
 
 npm install typescript -g
 
-tsc -w : funciona como um ng serve, acompanhando a atualização dos arquivos em tempo real
+tsc -w : funciona como um ng serve, acompanhando a atualização 
+dos arquivos em tempo real.
 
 criar um tsconfig.json com as configurações para compilar.
+
+node dist/app
+(roda o typescript)
 
 /********** FUNÇÕES ***********/
 
@@ -78,9 +82,27 @@ function inc(speed: number, inc: number = 1): number{
     return speed + inc
 }
 
+PARÂMETROS REST
+//padrão
+function countJedis(jedis: number[]):number{
+    return jedis.reduce((a, b) => a + b, 0)
+}
+
+countJedis([2, 3, 4])
+>9
+
+//REST
+function countJedis(...jedis:number[]):number{
+    return jedis.reduce((a, b) => a + b, 0)
+}
+
+countJedis(2, 3, 4)
+>9
+
 /*****************  CLASSES **************************/
 
-Classe é uma definição de objeto, define atributos e comportamento. Um objeto é a instância da classe.
+Classe é uma definição de objeto, define atributos e comportamento. 
+Um objeto é a instância da classe.
 
 class Spacecraft{
     propulsor: string
@@ -127,7 +149,8 @@ interface Containership{
     cargoContainers: number
 }
 
-//PARA QUE LEIA A INTERFACE, NECESSÁRIO O IMPLEMENTS E DENTRO DA CLASSE, COLOCAR A MESMA INFORMAÇÃO.
+//PARA QUE LEIA A INTERFACE, NECESSÁRIO O IMPLEMENTS E DENTRO DA CLASSE, 
+//COLOCAR A MESMA INFORMAÇÃO.
 class MilleniumFalcon extends Spacecraft implements Containership{
     cargoContainers: number
     
@@ -158,7 +181,8 @@ interface Smugglership extends Containership{
     hiddenContainers: number
 }
 
-Módulo é uma unidade que contém classes, interfaces, funções e variáveis. Organizando o conteúdo.
+Módulo é uma unidade que contém classes, interfaces, funções e variáveis. 
+Organizando o conteúdo.
 
 //------------dentro de um arquivo: base-ships.ts
 
@@ -178,9 +202,11 @@ class MilleniumFalcon extends Spacecraft{
 
 NAMESPACE EVITA COLISÃO DE NOMES, ANTIGOS MÓDULOS INTERNOS.
 
-Definição de tipo: pode trazer uma biblioteca qualquer para ser transformada pro javascript (*.d.ts)
+Definição de tipo: pode trazer uma biblioteca qualquer para ser transformada 
+pro javascript (*.d.ts)
 
-Para obter definições de tipo, é possível usar o NPM Registry, pelo git tem o Definitely Typed
+Para obter definições de tipo, é possível usar o NPM Registry, pelo git tem 
+o Definitely Typed
 
 > npm init 
   name: (typescript)
